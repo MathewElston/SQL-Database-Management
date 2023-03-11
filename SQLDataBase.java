@@ -27,7 +27,7 @@ public class SQLDataBase {
         sqlString.append(") VALUES (");
         for (int i = 0; i < columns.length; i++) {
             sqlString.append("?");
-            if (i < values.length - 1) {
+            if (i < columns.length - 1) {
                 sqlString.append(",");
             }
         }
@@ -35,14 +35,12 @@ public class SQLDataBase {
 
         try {
             Connection connection = DriverManager.getConnection(this.connectString,this.username,this.password);
-            System.out.println(sqlString.toString());
             PreparedStatement statement = connection.prepareStatement(sqlString.toString());
-            System.out.println(sqlString);
             for (int i = 0; i < values.length; i++) {
                 statement.setObject(i+1, values[i]);
             }
-
             statement.executeUpdate();
+            System.out.println(statement.toString());
             connection.close();            
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -56,6 +54,7 @@ public class SQLDataBase {
             Connection connection = DriverManager.getConnection(connectString,"root","");
             PreparedStatement statement = connection.prepareStatement(sqlString.toString());
             statement.setString(1, value);
+            statement.executeUpdate();
             connection.close();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());

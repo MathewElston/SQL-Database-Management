@@ -5,35 +5,36 @@ public class Main {
         Scanner keyboard = new Scanner(System.in);
         String connectionString = "jdbc:mysql://localhost:3306/coffee_db";
         String tableName = "customer";
+        SQLDataBase database = new SQLDataBase(tableName, connectionString, "root", "");
         String columns[] = {
             "name",
             "phone",
             "email"
         };
-        SQLDataBase database = new SQLDataBase(tableName, connectionString, "root", "");
 
         System.out.println("How many items would you like to add to the table?");
-        int valueSize = keyboard.nextInt();
+        int totalCount = keyboard.nextInt();
         keyboard.nextLine();
-        String values[] = new String [valueSize * columns.length];
-        int index = 0;
-        for (int i = 0; i < valueSize -1; i++) {
+        int count = 0;
+        String values[] = new String [columns.length];
+        while (count < totalCount) {
+            int index = 0;
             System.out.println("Customer Name?");
-            String customerName = keyboard.nextLine();
+            String customerName = keyboard.next();
             values[index] = customerName;
             index++;
 
             System.out.println("Customer phone number?");
-            String customerPhone = keyboard.nextLine();
+            String customerPhone = keyboard.next();
             values[index] = customerPhone;
             index++;
-
+            
             System.out.println("Customer Email?");
-            String customerEmail = keyboard.nextLine();
+            String customerEmail = keyboard.next();
             values[index] = customerEmail;
-            index++;
+            database.insert(columns, values);
+            count++;
         }
-        database.insert(columns, values);
         keyboard.close();
     }    
 }
